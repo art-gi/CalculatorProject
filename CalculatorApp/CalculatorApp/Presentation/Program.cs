@@ -10,6 +10,11 @@ namespace Presentation
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("This is school project.");
+            Console.WriteLine("------CALCULATOR+VAT-------");
+
+            Console.ReadLine();
+
         }
     }
 }
