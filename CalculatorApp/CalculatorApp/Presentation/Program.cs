@@ -10,7 +10,7 @@ namespace Presentation
     {
         public decimal WithVAT(decimal sum, decimal percent)
         {
-            return Math.Round(sum + sum * percent / 100, 2);
+            return Math.Round(sum * (1 + percent / 100), 2);
         }
 
         public decimal WithoutVAT(decimal sum, decimal percent)
@@ -51,9 +51,6 @@ namespace Presentation
 
         static void Main(string[] args)
         {
-            Console.WriteLine("This is school project.");
-            Console.WriteLine("------CALCULATOR+VAT-------");
-
             CalcOperations calc = new CalcOperations();
             VatCalculations vat = new VatCalculations();
 
@@ -67,10 +64,9 @@ namespace Presentation
                 int choice = int.Parse(Console.ReadLine());
 
                 if (choice == 0)
-                {
                     break;
-                }
-                else if (choice == 1)
+
+                if (choice == 1)
                 {
                     Console.WriteLine("Въведи пример, например 2+3 или 5*2.");
                     Console.WriteLine("Въведи 0 за връщане.");
@@ -80,61 +76,42 @@ namespace Presentation
                         string text = Console.ReadLine();
 
                         if (text == "0")
-                        {
                             break;
-                        }
 
                         try
                         {
-                            double a, b;
-                            int i;
+                            char operation = ' ';
 
-                            if (text.Contains("+"))
-                            {
-                                i = text.IndexOf("+");
-                                a = double.Parse(text.Substring(0, i));
-                                b = double.Parse(text.Substring(i + 1));
+                            if (text.Contains("+")) operation = '+';
+                            else if (text.Contains("-")) operation = '-';
+                            else if (text.Contains("*")) operation = '*';
+                            else if (text.Contains("/")) operation = '/';
+                            else if (text.Contains("%")) operation = '%';
+
+                            string[] numbers = text.Split(operation);
+
+                            double a = double.Parse(numbers[0]);
+                            double b = double.Parse(numbers[1]);
+
+                            if (operation == '+')
                                 Console.WriteLine(calc.Add(a, b));
-                            }
-                            else if (text.Contains("-"))
-                            {
-                                i = text.IndexOf("-");
-                                a = double.Parse(text.Substring(0, i));
-                                b = double.Parse(text.Substring(i + 1));
+                            else if (operation == '-')
                                 Console.WriteLine(calc.Subtract(a, b));
-                            }
-                            else if (text.Contains("*"))
-                            {
-                                i = text.IndexOf("*");
-                                a = double.Parse(text.Substring(0, i));
-                                b = double.Parse(text.Substring(i + 1));
+                            else if (operation == '*')
                                 Console.WriteLine(calc.Multiply(a, b));
-                            }
-                            else if (text.Contains("/"))
+                            else if (operation == '/')
                             {
-                                i = text.IndexOf("/");
-                                a = double.Parse(text.Substring(0, i));
-                                b = double.Parse(text.Substring(i + 1));
-
                                 if (b != 0)
                                     Console.WriteLine(calc.Divide(a, b));
                                 else
                                     Console.WriteLine("Не може да се дели на нула!");
                             }
-                            else if (text.Contains("%"))
+                            else if (operation == '%')
                             {
-                                i = text.IndexOf("%");
-                                a = double.Parse(text.Substring(0, i));
-                                b = double.Parse(text.Substring(i + 1));
-
                                 if (b != 0)
                                     Console.WriteLine(calc.ModuleDivide(a, b));
                                 else
                                     Console.WriteLine("Не може да се дели на нула!");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Невалидна операция!");
                             }
                         }
                         catch
@@ -157,17 +134,11 @@ namespace Presentation
                     decimal percent = decimal.Parse(Console.ReadLine());
 
                     if (option == 1)
-                    {
                         Console.WriteLine("Сума с ДДС: " + vat.WithVAT(sum, percent));
-                    }
                     else if (option == 2 && percent > -100)
-                    {
                         Console.WriteLine("Сума без ДДС: " + vat.WithoutVAT(sum, percent));
-                    }
                     else
-                    {
                         Console.WriteLine("Невалиден избор!");
-                    }
                 }
                 else
                 {
@@ -176,5 +147,4 @@ namespace Presentation
             }
         }
     }
-
 }
